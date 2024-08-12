@@ -4,9 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import WelcomeMessage from './components/WelcomeMessage'
 import Counter from './components/Counter';
+import ProfilePage from './ProfilePage';
+import { UserProvider } from './UserContext';
 
 function App() {
   const [count, setCount] = useState(0)
+  const userData = { name: "Jane Doe", email: "jane.doe@example.com" };
 
   return (
     <>
@@ -38,6 +41,9 @@ function App() {
       <h1>Counter Application</h1>
       <Counter />
     </div>
+      <UserProvider value={userData}>
+      <ProfilePage />
+    </UserProvider>
     </>
   )
 }
