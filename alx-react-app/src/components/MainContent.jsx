@@ -1,9 +1,9 @@
 function MainContent() {
     return (
-        <main>
-            <p>I love to visit New York, Paris, and Tokyo.</p>
-        </main>
+      <main style={{ padding: '20px', backgroundColor: 'lightgray', textAlign: 'left' }}>
+        <p>This is where the main content goes.</p>
+      </main>
     );
-}
-
-export default MainContent;
+  }
+  
+  export default MainContent;
