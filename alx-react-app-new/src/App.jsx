@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import WelcomeMessage from './components/WelcomeMessage'
+import Counter from './components/Counter';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -33,6 +34,10 @@ function App() {
             <WelcomeMessage />
             {/* Other components or JSX can be included here */}
         </div>
+      <div className="App">
+      <h1>Counter Application</h1>
+      <Counter />
+    </div>
     </>
   )
 }
