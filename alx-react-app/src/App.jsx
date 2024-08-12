@@ -2,15 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-<<<<<<< HEAD
 import WelcomeMessage from './components/WelcomeMessage'
-=======
-import WelcomeMessage from './WelcomeMessage'
-import Header from './components/Header'
-import MainContent from './components/MainContent'
-import Footer from './components/Footer'
-import UserProfile from './components/UserProfile'
->>>>>>> origin/main
 
 function App() {
   const [count, setCount] = useState(0)
@@ -41,17 +33,6 @@ function App() {
             <WelcomeMessage />
             {/* Other components or JSX can be included here */}
         </div>
-<<<<<<< HEAD
-=======
-      <div>
-            <Header />
-            <MainContent />
-            <Footer />
-        </div>
-      <div>
-      <UserProfile name="Alice" age="25" bio="Loves hiking and photography" />
-    </div>
->>>>>>> origin/main
     </>
   )
 }
