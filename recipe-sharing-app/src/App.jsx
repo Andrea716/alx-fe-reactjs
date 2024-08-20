@@ -40,11 +40,14 @@ function App() {
       <RecipeList />
     </div>
       <Router>
+        <div style={{ padding: '20px' }}>
+          <h1>Recipe Sharing App</h1>
       <Routes>
         <Route path="/" element={<RecipeList />} />
         <Route path="/add" element={<AddRecipeForm />} />
         <Route path="/recipe/:recipeId" element={<RecipeDetails />} />
       </Routes>
+         </div>
     </Router>
       <div style={{ padding: '20px' }}>
       <h1>Recipe Sharing App</h1>
