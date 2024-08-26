@@ -34,9 +34,17 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-syntax-jsx": "^7.24.7",
     "@babel/preset-react": "^7.24.7",
     "@testing-library/jest-dom": "^6.5.0",
     "@testing-library/react": "^16.0.0",
+    "babel-jest": "^29.7.0",
     "jest": "^27.5.1"
+  },
+  "module.exports": {
+    "transform": {
+      "^.+\\.(js|jsx)$": "babel-jest"
+    },
+    "testEnvironment": "jsdom"
   }
 }
