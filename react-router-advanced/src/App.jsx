@@ -7,6 +7,7 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import NotFound from './components/NotFound';
 import BlogPost from './components/BlogPost';
+import Blog from './Blog';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -46,7 +47,8 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/post/:id" element={<BlogPost />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogPost />} /> {/* Dynamic route */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
