@@ -4,40 +4,46 @@ const AddRecipeForm = () => {
   const [title, setTitle] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [steps, setSteps] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errors, setErrors] = useState({});
+
+  // Validation function
+  const validate = () => {
+    let tempErrors = {};
+    if (!title.trim()) tempErrors.title = 'Recipe title is required';
+    if (!ingredients.trim()) tempErrors.ingredients = 'Ingredients are required';
+    else if (ingredients.split(',').length < 2) tempErrors.ingredients = 'Please enter at least two ingredients';
+    if (!steps.trim()) tempErrors.steps = 'Preparation steps are required';
+    
+    return tempErrors;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    // Validate fields
+    const tempErrors = validate();
+    setErrors(tempErrors);
 
-    // Simple validation: Check that all fields are filled and ingredients have at least two items
-    if (!title || !ingredients || !steps) {
-      setErrorMessage('Please fill out all fields.');
-      return;
+    // Check if there are no errors
+    if (Object.keys(tempErrors).length === 0) {
+      // Handle successful form submission (you can send data to your server here)
+      console.log({
+        title,
+        ingredients: ingredients.split(','),
+        steps,
+      });
+
+      // Clear the form after submission
+      setTitle('');
+      setIngredients('');
+      setSteps('');
+      setErrors({});
     }
-
-    if (ingredients.split(',').length < 2) {
-      setErrorMessage('Please enter at least two ingredients.');
-      return;
-    }
-
-    // Simulate form submission (add actual logic here, e.g., send data to server)
-    console.log({
-      title,
-      ingredients: ingredients.split(','),
-      steps,
-    });
-
-    // Clear the form after submission
-    setTitle('');
-    setIngredients('');
-    setSteps('');
-    setErrorMessage('');
   };
 
   return (
     <div className="max-w-lg mx-auto my-10 p-8 bg-white rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6">Add a New Recipe</h1>
-      {errorMessage && <p className="text-red-500 mb-4">{errorMessage}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
@@ -51,7 +57,9 @@ const AddRecipeForm = () => {
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter recipe title"
           />
+          {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
         </div>
+
         <div className="mb-4">
           <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700 mb-2">
             Ingredients (comma-separated)
@@ -63,7 +71,9 @@ const AddRecipeForm = () => {
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter ingredients"
           />
+          {errors.ingredients && <p className="text-red-500 text-sm">{errors.ingredients}</p>}
         </div>
+
         <div className="mb-4">
           <label htmlFor="steps" className="block text-sm font-medium text-gray-700 mb-2">
             Preparation Steps
@@ -75,7 +85,9 @@ const AddRecipeForm = () => {
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="Enter preparation steps"
           />
+          {errors.steps && <p className="text-red-500 text-sm">{errors.steps}</p>}
         </div>
+
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-300"
