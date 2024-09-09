@@ -13,6 +13,13 @@ const HomePage = () => {
   }, []);
 
   return (
+    <div>
+      <h1>Welcome to the Recipe Sharing Platform</h1>
+      <Link to="/add-recipe" className="bg-green-500 text-white py-2 px-4 rounded-lg">
+        Add a New Recipe
+      </Link>
+    </div>
+    
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-4xl font-bold mb-8">Recipe List</h1>
 
@@ -41,6 +48,7 @@ const HomePage = () => {
               </Link>
             </div>
           </div>
+         
         ))}
       </div>
     </div>
