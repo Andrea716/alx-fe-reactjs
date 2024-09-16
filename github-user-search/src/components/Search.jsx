@@ -1,79 +1,77 @@
 import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService'; // Import the API service
+import axios from 'axios';
 
-function Search() {
-  const [username, setUsername] = useState('');        // Username state
-  const [location, setLocation] = useState('');        // Location state
-  const [minRepos, setMinRepos] = useState('');        // Minimum repos state
-  const [userData, setUserData] = useState(null);      // Fetched user data state
-  const [loading, setLoading] = useState(false);       // Loading state
-  const [error, setError] = useState(null);            // Error state
+const Search = () => {
+  const [username, setUsername] = useState('');
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
-    setUserData(null);  // Clear previous results before new search
-
+    setError('');
     try {
-      const data = await fetchUserData(username, location, minRepos);  // Fetch advanced search data
-      setUserData(data);  // Set the fetched data
+      // Construct the query string with advanced search parameters
+      const query = `user:${username} location:${location} repos:>${minRepos}`;
+      const response = await axios.get(`https://api.github.com/search/users?q=${query}`);
+      setUsers(response.data.items);
     } catch (err) {
-      setError('Looks like we can’t find the user');  // Error handling
+      setError('Looks like we can’t find the user');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="bg-gray-100 p-6">
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-      <input
-      type="text"
-      placeholder="Enter GitHub username"
-      value={username}
-      onChange={(e) => setUsername(e.target.value)}
-      className="border p-2 rounded"
-    />
-    <input
-      type="text"
-      placeholder="Location"
-      value={location}
-      onChange={(e) => setLocation(e.target.value)}
-      className="border p-2 rounded"
-    />
-    <input
-      type="number"
-      placeholder="Minimum Repositories"
-      value={minRepos}
-      onChange={(e) => setMinRepos(e.target.value)}
-      className="border p-2 rounded"
-    />
-      <button
-      type="submit"
-      className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
-    >
-      Search
-    </button>
-  </form>
+    <div className="container mx-auto p-4">
+      <form onSubmit={handleSubmit} className="mb-4">
+        <input
+          type="text"
+          placeholder="Enter GitHub username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          className="border p-2 rounded mr-2"
+        />
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="border p-2 rounded mr-2"
+        />
+        <input
+          type="number"
+          placeholder="Minimum Repositories"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          className="border p-2 rounded mr-2"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
+        >
+          Search
+        </button>
+      </form>
 
-      {/* Loading, Error, and User Data rendering */}
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
-      {userData && (
-        <div>
-          <img src={userData.avatar_url} alt={userData.login} width="100" />
-          <p>Name: {userData.name ? userData.name : "N/A"}</p>
-          <p>Username: {userData.login}</p>
-          <p>Location: {userData.location}</p>
-          <p>Repositories: {userData.public_repos}</p>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-            View GitHub Profile
-          </a>
-        </div>
-      )}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {users.map((user) => (
+          <div key={user.id} className="border p-4 rounded">
+            <img src={user.avatar_url} alt={user.login} className="w-16 h-16 rounded-full mb-2" />
+            <h3 className="text-xl font-semibold">{user.login}</h3>
+            <a href={`https://github.com/${user.login}`} className="text-blue-500" target="_blank" rel="noopener noreferrer">
+              View Profile
+            </a>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default Search;
