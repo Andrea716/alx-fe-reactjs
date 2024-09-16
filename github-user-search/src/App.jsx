@@ -30,21 +30,6 @@ function App() {
 
   return (
     <>
-    <div>
-      <h1>GitHub User Search</h1>
-      <Search onSearch={handleSearch} />
-
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
-      {userData && (
-        <div>
-          <img src={userData.avatar_url} alt={userData.login} width="100" />
-          <p>Name: {userData.name}</p>
-          <p>Username: {userData.login}</p>
-          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">View GitHub Profile</a>
-        </div>
-      )}
-    </div>
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -73,7 +58,10 @@ function App() {
       </Routes>
     </div>
   </Router>
-    
+    <div>
+    <h1>GitHub User Search</h1>
+    <Search />  {/* Render the Search component */}
+  </div>
   )
 }
 
