@@ -5,9 +5,28 @@ import './App.css'
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Search from './components/Search';
+import { fetchUserData } from './services/githubService';
 
 function App() {
   const [count, setCount] = useState(0)
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const handleSearch = async (username) => {
+    setLoading(true);
+    setError(null);
+    setUserData(null);
+
+    try {
+      const data = await fetchUserData(username);
+      setUserData(data);
+    } catch (err) {
+      setError('Looks like we can’t find the user');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -39,6 +58,21 @@ function App() {
       </Routes>
     </div>
   </Router>
+    <div>
+      <h1>GitHub User Search</h1>
+        <Search onSearch={handleSearch} />
+
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
+      {userData && (
+        <div>
+          <img src={userData.avatar_url} alt={userData.login} width="100" />
+          <p>Name: {userData.name}</p>
+          <p>Username: {userData.login}</p>
+          <a href={userData.html_url} target="_blank" rel="noopener noreferrer">View GitHub Profile</a>
+        </div>
+      )}
+  </div>
   )
 }
 
