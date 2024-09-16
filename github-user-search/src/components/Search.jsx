@@ -6,7 +6,7 @@ function Search({ onSearch }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username.trim()) {
-      onSearch(username);
+      onSearch(username);  // Pass the search term to the parent component
     }
   };
 
