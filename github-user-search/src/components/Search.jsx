@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService';  // Import the API service
+import { fetchUserData } from '../services/githubService'; // Import the API service
 
 function Search() {
-  const [username, setUsername] = useState('');  // To hold the input username
-  const [userData, setUserData] = useState(null);  // To store fetched user data
-  const [loading, setLoading] = useState(false);  // To handle the loading state
-  const [error, setError] = useState(null);  // To store the error message
+  const [username, setUsername] = useState('');        // Username state
+  const [location, setLocation] = useState('');        // Location state
+  const [minRepos, setMinRepos] = useState('');        // Minimum repos state
+  const [userData, setUserData] = useState(null);      // Fetched user data state
+  const [loading, setLoading] = useState(false);       // Loading state
+  const [error, setError] = useState(null);            // Error state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,38 +16,60 @@ function Search() {
     setUserData(null);  // Clear previous results before new search
 
     try {
-      const data = await fetchUserData(username);  // Fetch user data from the GitHub API
-      setUserData(data);  // Set the fetched data into the state
+      const data = await fetchUserData(username, location, minRepos);  // Fetch advanced search data
+      setUserData(data);  // Set the fetched data
     } catch (err) {
-      setError('Looks like we can’t find the user');  // Display this error if the user is not found
+      setError('Looks like we can’t find the user');  // Error handling
     } finally {
-      setLoading(false);  // Stop loading once the API call is done
+      setLoading(false);
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
+    <div className="p-6">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="text"
           placeholder="Enter GitHub username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}  // Update username in state
+          onChange={(e) => setUsername(e.target.value)}
+          className="border p-2 rounded"
         />
-        <button type="submit">Search</button>
+        <input
+          type="text"
+          placeholder="Location"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="border p-2 rounded"
+        />
+        <input
+          type="number"
+          placeholder="Minimum Repositories"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
+          className="border p-2 rounded"
+        />
+        <button
+          type="submit"
+          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
+        >
+          Search
+        </button>
       </form>
 
-      {/* Conditional rendering based on state */}
-      {loading && <p>Loading...</p>}  {/* Show while data is being fetched */}
-      {error && <p>{error}</p>}  {/* Display error message if user not found */}
+      {/* Loading, Error, and User Data rendering */}
+      {loading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
       {userData && (
         <div>
-          <img src={userData.avatar_url} alt={userData.login} width="100" />  {/* Display avatar */}
-          <p>Name: {userData.name ? userData.name : "N/A"}</p>  {/* Display name if available */}
-          <p>Username: {userData.login}</p>  {/* Display GitHub username */}
+          <img src={userData.avatar_url} alt={userData.login} width="100" />
+          <p>Name: {userData.name ? userData.name : "N/A"}</p>
+          <p>Username: {userData.login}</p>
+          <p>Location: {userData.location}</p>
+          <p>Repositories: {userData.public_repos}</p>
           <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
             View GitHub Profile
-          </a>  {/* Link to GitHub profile */}
+          </a>
         </div>
       )}
     </div>
