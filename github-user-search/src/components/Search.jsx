@@ -26,36 +26,36 @@ function Search() {
   };
 
   return (
-    <div className="p-6">
+    <div className="bg-gray-100 p-6">
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-        <input
-          type="text"
-          placeholder="Enter GitHub username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <input
-          type="number"
-          placeholder="Minimum Repositories"
-          value={minRepos}
-          onChange={(e) => setMinRepos(e.target.value)}
-          className="border p-2 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
-        >
-          Search
-        </button>
-      </form>
+      <input
+      type="text"
+      placeholder="Enter GitHub username"
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+      className="border p-2 rounded"
+    />
+    <input
+      type="text"
+      placeholder="Location"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+      className="border p-2 rounded"
+    />
+    <input
+      type="number"
+      placeholder="Minimum Repositories"
+      value={minRepos}
+      onChange={(e) => setMinRepos(e.target.value)}
+      className="border p-2 rounded"
+    />
+      <button
+      type="submit"
+      className="bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
+    >
+      Search
+    </button>
+  </form>
 
       {/* Loading, Error, and User Data rendering */}
       {loading && <p>Loading...</p>}
