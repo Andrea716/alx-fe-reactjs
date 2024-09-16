@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of Axios with the base URL
 const api = axios.create({
-  baseURL: 'https://api.github.com',
+  baseURL: 'https://api.github.com/search/user?q',
 });
 
 // Function to fetch user data based on advanced search criteria
