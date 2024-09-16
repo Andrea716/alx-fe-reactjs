@@ -1,27 +1,18 @@
 import axios from 'axios';
 
+// Create an instance of Axios with the base URL
+const api = axios.create({
+  baseURL: 'https://api.github.com',
+});
+
+// Function to fetch user data based on advanced search criteria
 export const fetchUserData = async (username, location, minRepos) => {
-  const baseURL = `https://api.github.com/search/users`;
-
-  let query = `q=${username}`;
-
-  // Add optional search filters if they are provided
-  if (location) {
-    query += `+location:${location}`;
-  }
-  if (minRepos) {
-    query += `+repos:>${minRepos}`;
-  }
-
   try {
-    const response = await axios.get(`${baseURL}?${query}`);
-    // Return the first user from the list of search results
-    if (response.data.items.length > 0) {
-      return response.data.items[0];  // Return only the first result
-    } else {
-      throw new Error('No user found');
-    }
+    // Construct the query string with advanced search parameters
+    const query = `user:${username} location:${location} repos:>${minRepos}`;
+    const response = await api.get(`/search/users?q=${encodeURIComponent(query)}`);
+    return response.data;
   } catch (error) {
-    throw error;
+    throw new Error('Error fetching user data');
   }
 };
